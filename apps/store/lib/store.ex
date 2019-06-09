@@ -51,7 +51,4 @@ defmodule Store do
     end
   end
 
-  def hello(val \\ "world") do
-    "Hello #{val}" |> IO.puts()
-  end
 end
