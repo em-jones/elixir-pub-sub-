@@ -22,7 +22,9 @@ defmodule WebServer.Application do
     ]
 
     Logger.info("Starting application...")
-    spawn(fn -> QueueServer.subscribe(:queue1, fn msg -> IO.puts("#{msg}") end) end)
+
+    # Given this is a proof of concept, this is what we're using to do our subscribing, currently
+    Task.start(fn -> QueueServer.subscribe(:queue1, fn msg -> IO.puts("Implementation 1: #{msg}") end) end)
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
