@@ -5,7 +5,7 @@ defmodule Store do
 
   @doc """
   Store creation -
-  spawns a process to act as a pub/sub server
+  "spawns" (Task.start_link) a process to act as a pub/sub server
   ## Examples
       iex> {:ok, server} = Store.init
 

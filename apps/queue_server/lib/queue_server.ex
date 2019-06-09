@@ -15,7 +15,6 @@ defmodule QueueServer do
   require Logger
 
   defp get_queue(queue_name) do
-    queue_name
     registered? = Enum.any?(Process.registered(), fn name -> name == queue_name end)
 
     unless registered? do
@@ -31,11 +30,13 @@ defmodule QueueServer do
     Logger.info("Subscribing #{inspect(queue_name)}")
 
     with queue <- get_queue(queue_name),
-         do: spawn(fn -> Store.subscribe(queue, handler) end)
+         #         do: spawn(fn -> Store.subscribe(queue, handler) end)
+         do: Task.start_link(Store, :subscribe, [queue, handler])
   end
 
   def publish(queue_name, message) do
     with queue <- get_queue(queue_name),
-         do: spawn(fn -> Store.publish(queue, message) end)
+         #         do: spawn(fn -> Store.publish(queue, handler) end)
+         do: Task.start_link(Store, :publish, [queue, message])
   end
 end
