@@ -13,8 +13,7 @@ defmodule Store do
   require Logger
 
   def init do
-    {:ok, agent} = Agent.start_link(fn -> [] end)
-    Task.start_link(__MODULE__, :run, [agent])
+    spawn(fn -> Store.run([]) end)
   end
 
   def subscribe(process, handler) do
@@ -32,6 +31,7 @@ defmodule Store do
   end
 
   def publish(server, message) do
+    Logger.info("Publishing message #{message}")
     send(server, {:publish, message})
   end
 
@@ -41,15 +41,14 @@ defmodule Store do
   subscribe - adds a subscriber pid to the list of subscribers
 
   """
-  def run(agent) do
+  def run(subscribers) do
     receive do
       {:publish, message} ->
-        Agent.get(agent, fn subscribers -> Enum.each(subscribers, fn subscriber -> send(subscriber, message) end) end)
-        run(agent)
+        Enum.each(subscribers, fn subscriber -> send(subscriber, message) end)
+        run(subscribers)
 
       {:subscribe, subscriber} ->
-        Agent.update(agent, fn subscribers -> [subscriber | subscribers] end)
-        run(agent)
+        run([subscriber | subscribers])
     end
   end
 

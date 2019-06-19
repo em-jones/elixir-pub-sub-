@@ -17,7 +17,6 @@
     <orderEntry type="jdk" jdkName="Elixir 1.8.1" jdkType="Elixir SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="plug_cowboy" level="project" />
-    <orderEntry type="module" module-name="queue_server" />
     <orderEntry type="library" name="plug" level="project" />
     <orderEntry type="library" name="cowboy" level="project" />
     <orderEntry type="library" name="ex_doc" level="project" />
@@ -29,5 +28,38 @@
     <orderEntry type="library" name="cowlib" level="project" />
     <orderEntry type="library" name="ranch" level="project" />
     <orderEntry type="library" name="earmark" level="project" />
+    <orderEntry type="module" module-name="queue_server" />
+    <orderEntry type="module" module-name="queue_server" />
+    <orderEntry type="module" module-name="queue_server" />
+    <orderEntry type="module" module-name="queue_server" />
+    <orderEntry type="module" module-name="queue_server" />
+    <orderEntry type="module" module-name="queue_server" />
+    <orderEntry type="module" module-name="queue_server" />
+    <orderEntry type="module" module-name="queue_server" />
+    <orderEntry type="module" module-name="queue_server" />
+    <orderEntry type="module" module-name="queue_server" />
+    <orderEntry type="module" module-name="queue_server" />
+    <orderEntry type="module" module-name="repo" />
+    <orderEntry type="library" name="poison" level="project" />
+    <orderEntry type="module" module-name="queue_server" />
+    <orderEntry type="module" module-name="repo" />
+    <orderEntry type="library" name="benchfella" level="project" />
+    <orderEntry type="library" name="jiffy" level="project" />
+    <orderEntry type="library" name="exjsx" level="project" />
+    <orderEntry type="library" name="json" level="project" />
+    <orderEntry type="library" name="jazz" level="project" />
+    <orderEntry type="module" module-name="queue_server" />
+    <orderEntry type="module" module-name="repo" />
+    <orderEntry type="module" module-name="queue_server" />
+    <orderEntry type="module" module-name="repo" />
+    <orderEntry type="library" name="jason" level="project" />
+    <orderEntry type="module" module-name="queue_server" />
+    <orderEntry type="module" module-name="repo" />
+    <orderEntry type="module" module-name="queue_server" />
+    <orderEntry type="module" module-name="repo" />
+    <orderEntry type="module" module-name="queue_server" />
+    <orderEntry type="module" module-name="repo" />
+    <orderEntry type="module" module-name="queue_server" />
+    <orderEntry type="module" module-name="repo" />
   </component>
 </module>

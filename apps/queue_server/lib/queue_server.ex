@@ -3,40 +3,29 @@ defmodule QueueServer do
   Documentation for QueueServer.
   """
 
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> QueueServer.hello()
-      :world
-
-  """
   require Logger
 
-  defp get_queue(queue_name) do
-    registered? = Enum.any?(Process.registered(), fn name -> name == queue_name end)
+  @doc """
+  With our store's implementation of 'subscribe/2' what we're doing is spawning a new process that will act as our subscriber
+  and that process has a handler attached to it and a queue process that we anticipate being published to, by
+  """
 
+  def subscribe(queue, handler) do
+    Logger.info("Subscribing #{inspect(queue)}")
+    registered? = Process.whereis(queue)
     unless registered? do
-      with {:ok, queue} <- Store.init(),
-           true <- Process.register(queue, queue_name),
-           do: Process.whereis(queue_name)
-    else
-      Process.whereis(queue_name)
+      Process.register(Store.init(), queue)
     end
+    spawn(fn -> Store.subscribe(queue, handler) end)
+    #         do: Task.start_link(Store, :subscribe, [queue, handler])
   end
 
-  def subscribe(queue_name, handler) do
-    Logger.info("Subscribing #{inspect(queue_name)}")
-
-    with queue <- get_queue(queue_name),
-         #         do: spawn(fn -> Store.subscribe(queue, handler) end)
-         do: Task.start_link(Store, :subscribe, [queue, handler])
-  end
-
-  def publish(queue_name, message) do
-    with queue <- get_queue(queue_name),
-         #         do: spawn(fn -> Store.publish(queue, handler) end)
-         do: Task.start_link(Store, :publish, [queue, message])
+  def publish(queue, message) do
+    registered? = Process.whereis(queue)
+    unless registered? do
+      Process.register(Store.init(), queue)
+    end
+    spawn(fn -> Store.publish(queue, message) end)
+    #         do: Task.start_link(Store, :publish, [queue, message])
   end
 end

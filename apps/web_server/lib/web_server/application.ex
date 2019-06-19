@@ -24,7 +24,9 @@ defmodule WebServer.Application do
     Logger.info("Starting application...")
 
     # Given this is a proof of concept, this is what we're using to do our subscribing, currently
-    Task.start(fn -> QueueServer.subscribe(:queue1, fn msg -> IO.puts("Implementation 1: #{msg}") end) end)
+    spawn(fn -> QueueServer.subscribe(:feelz_create, fn name -> Repo.Mongo.add(name) end) end)
+    :timer.sleep 1000
+    spawn(fn -> QueueServer.subscribe(:queue1, fn msg -> IO.puts("Implementation 1: #{msg}\nHandler 2") end) end)
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
