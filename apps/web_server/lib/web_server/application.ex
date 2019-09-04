@@ -18,18 +18,20 @@ defmodule WebServer.Application do
         options: [
           port: 8000
         ]
-      },
+      }
     ]
 
     Logger.info("Starting application...")
 
-    # Given this is a proof of concept, this is what we're using to do our subscribing, currently
-    spawn(fn -> QueueServer.subscribe(:feelz_create, fn name -> Repo.Mongo.add(name) end) end)
-    :timer.sleep 1000
-    spawn(fn -> QueueServer.subscribe(:queue1, fn msg -> IO.puts("Implementation 1: #{msg}\nHandler 2") end) end)
+    {:ok, _} = Registry.start_link(keys: :unique, name: Registry.PubSubTest)
 
-    # See https://hexdocs.pm/elixir/Supervisor.html
-    # for other strategies and supported options
+    queue_server = QueueServer.start # create our microservice's queue server
+    Process.register(queue_server, :queue_server) # register it against a name
+
+    spawn(QueueServer, :subscribe, [queue_server, :log, QueueServer.create_handler(&(IO.puts("Log Received - Process handle 1#{&1}")))]) # listener process spawning
+    spawn(QueueServer, :subscribe, [queue_server, :log, QueueServer.create_handler(&(IO.puts("Log Received - Process handle 2#{&1}")))]) # listener process spawning
+    spawn(QueueServer, :subscribe, [queue_server, :telemetry, QueueServer.create_handler(&(IO.puts("Telemetry - #{&1}")))]) # listener process spawning
+
     opts = [strategy: :one_for_one, name: WebServer.Supervisor]
     Supervisor.start_link(children, opts)
   end
